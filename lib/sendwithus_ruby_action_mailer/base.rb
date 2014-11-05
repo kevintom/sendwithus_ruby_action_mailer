@@ -114,8 +114,12 @@ module SendWithUsMailer
     #   end
     def mail(params = {})
       @message.merge!(self.class.defaults.merge(params))
+      @message = self.delivering_email(@message)
     end
 
+    def delivering_email(email)
+      email
+    end
     # Assign variables that will be sent in the payload to Send With Us.
     #
     # For example:

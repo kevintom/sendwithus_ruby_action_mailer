@@ -67,4 +67,17 @@ describe SendWithUsMailer::Base do
       MailerWithAssign.example
     end
   end
+
+  describe "#mail" do
+    class Mailer < SendWithUsMailer::Base
+      def example
+        mail to:"test@email.com"
+      end
+    end
+
+    it "call delivering_email" do
+      Mailer.any_instance.expects(:delivering_email)
+      Mailer.example
+    end
+  end
 end

@@ -3,8 +3,10 @@ require "send_with_us"
 module SendWithUsMailer
   class MailParams
     attr_reader :to, :from, :email_id, :email_data
+    attr_accessor :perform_deliveries
 
     def initialize #:nodoc:
+      @perform_deliveries = true
       @email_data = {}
       @to = {}
       @from = {}
@@ -49,7 +51,9 @@ module SendWithUsMailer
     # In particular, the +api_key+ must be set (following the guidelines in the
     # +send_with_us+ documentation).
     def deliver
-      SendWithUs::Api.new.send_with(@email_id, @to, @email_data, @from, @cc, @bcc, [], "", @version_name)
+      if perform_deliveries
+        SendWithUs::Api.new.send_with(@email_id, @to, @email_data, @from, @cc, @bcc, [], "", @version_name)
+      end
     end
   end
 end

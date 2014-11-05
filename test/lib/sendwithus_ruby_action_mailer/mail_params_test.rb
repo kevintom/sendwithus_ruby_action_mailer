@@ -7,6 +7,10 @@ describe SendWithUsMailer::MailParams do
     it "email_data is empty on initialization" do
       subject.email_data.empty?.must_equal true
     end
+
+    it "perform_deliveries is true" do
+      subject.perform_deliveries.must_equal true
+    end
   end
 
   describe "#assign" do
@@ -59,6 +63,12 @@ describe SendWithUsMailer::MailParams do
 
     it "calls the send_with_us gem" do
       SendWithUs::Api.any_instance.expects(:send_with)
+      subject.deliver
+    end
+
+    it "won't deliver if perform_deliveries is false" do
+      subject.perform_deliveries = false
+      SendWithUs::Api.any_instance.expects(:send_with).never
       subject.deliver
     end
   end
